@@ -9,8 +9,13 @@ const environment = (process.env.NODE_ENV || 'development') as Environment
 const config = knexFile[environment]
 const db = knex.default(config)
 
-export async function getAllLocations() {
+export async function getAllLocations(): Promise<Location[]> {
   // TODO: use knex to get the real location data from the database
+  try {
+    return db('locations').select()
+  } catch (err: any) {
+    return err.message
+  }
 }
 
 // TODO: write some more database functions
