@@ -20,32 +20,21 @@ router.get('/add/:day', async (req, res) => {
   res.render('addEvent', viewData)
 })
 
-
-  // TODO: Replace this with all of the locations in the database
-  // const locations = [
-  //   {
-  //     id: 1,
-  //     name: 'TangleStage',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Yella Yurt',
-  //   },
-  // ]
-
-
-
 // POST /events/add
-router.post('/add', (req, res) => {
+router.post('/add', async (req, res, next) => {
   // ASSISTANCE: So you know what's being posted ;)
-  // const { name, description, time, locationId } = req.body
-  // const day = validateDay(req.body.day)
+  const { name, description, time, location_id } = req.body
+  const day = validateDay(req.body.day)
 
   // TODO: Add the event to the database and then redirect
+  try {
+    await db.addNewEvent(name, description, time, location_id)
+    res.redirect(`/schedule/${day}`)
+    console.log({ name, description, time, location_id })
+  } catch (err) {
+    next(err)
+  }
 
-  const day = 'friday' // TODO: Remove this line
-
-  res.redirect(`/schedule/${day}`)
 })
 
 // POST /events/delete

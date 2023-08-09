@@ -58,12 +58,14 @@ export async function updateLocation(
   return result as Location[]
 }
 
-// return db('renters')
-// .returning([
-//   'id',
-//   'name',
-//   'phone_num as phoneNum',
-//   'fav_movie_id as favMovieId',
-// ])
-// .update({ ...formattedRenterData })
-// .where('id', renter.id)
+export async function addNewEvent(
+  name: string,
+  description: string,
+  time: string,
+  location_id: number
+) {
+  const result = await db('events')
+    .returning(['location_id', 'day', 'time', 'name', 'description'])
+    .insert(name, description, time, location_id)
+  return result
+}
