@@ -31,7 +31,6 @@ export async function getEventsByDay(day: string): Promise<Location[]> {
       'events.description'
     )
     .where('events.day', day)
-  console.log('pumpkin', result)
   return result
 }
 
@@ -62,10 +61,11 @@ export async function addNewEvent(
   name: string,
   description: string,
   time: string,
-  location_id: number
+  locationId: number,
+  day: string
 ) {
   const result = await db('events')
     .returning(['location_id', 'day', 'time', 'name', 'description'])
-    .insert(name, description, time, location_id)
+    .insert({name: name, description: description, time: time, location_id: locationId, day: day})
   return result
 }

@@ -13,8 +13,7 @@ router.get('/:day', async (req, res) => {
     day: day,
     events: eventsArr,
   }
-  console.log('potato', eventsArr)
-  console.log('viewData', viewData)
+
   res.render('showDay', viewData)
 
   // TODO: Replace the hard-coded `events` array in the viewData with a set of events from the
