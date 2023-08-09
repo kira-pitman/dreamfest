@@ -38,3 +38,11 @@ export async function getEventsByDay(day: string): Promise<Location[]> {
     return err.message
   }
 }
+
+export async function getLocationById(id: number): Promise<Location[]> {
+  try {
+    return db('locations').select().where({id}).first()
+  } catch (err: any) {
+    return err.message
+  }
+}
