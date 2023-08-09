@@ -7,7 +7,7 @@ const router = express.Router()
 export default router
 
 // GET /events/add/friday
-router.get('/add/:day', (req, res) => {
+router.get('/add/:day', async (req, res) => {
   const day = validateDay(req.params.day)
   const days = eventDays.map((eventDay) => ({
     value: eventDay,
@@ -15,21 +15,25 @@ router.get('/add/:day', (req, res) => {
     selected: eventDay === day ? 'selected' : '',
   }))
 
-  // TODO: Replace this with all of the locations in the database
-  const locations = [
-    {
-      id: 1,
-      name: 'TangleStage',
-    },
-    {
-      id: 2,
-      name: 'Yella Yurt',
-    },
-  ]
-
+  const locations = await db.getAllLocations()
   const viewData = { locations, days, day }
   res.render('addEvent', viewData)
 })
+
+
+  // TODO: Replace this with all of the locations in the database
+  // const locations = [
+  //   {
+  //     id: 1,
+  //     name: 'TangleStage',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Yella Yurt',
+  //   },
+  // ]
+
+
 
 // POST /events/add
 router.post('/add', (req, res) => {
