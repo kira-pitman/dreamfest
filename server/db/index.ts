@@ -20,29 +20,50 @@ export async function getAllLocations(): Promise<Location[]> {
 
 // TODO: write some more database functions
 export async function getEventsByDay(day: string): Promise<Location[]> {
-  try {
-    const result = await db('events')
-      .join('locations', 'events.location_id', 'locations.id')
-      .select(
-        'events.id',
-        'events.day',
-        'events.name as eventName',
-        'events.time',
-        'locations.name as locationName',
-        'events.description'
-      )
-      .where('events.day', day)
-      console.log('pumpkin', result)
-      return result
-  } catch (err: any) {
-    return err.message
-  }
+  const result = await db('events')
+    .join('locations', 'events.location_id', 'locations.id')
+    .select(
+      'events.id',
+      'events.day',
+      'events.name as eventName',
+      'events.time',
+      'locations.name as locationName',
+      'events.description'
+    )
+    .where('events.day', day)
+  console.log('pumpkin', result)
+  return result
 }
 
 export async function getLocationById(id: number): Promise<Location[]> {
-  try {
-    return db('locations').select().where({id}).first()
-  } catch (err: any) {
-    return err.message
-  }
+  return db('locations').select().where({ id }).first()
 }
+
+export async function updateLocation(
+  id: number,
+  name: string,
+  description: string
+): Promise<Location[]> {
+  const formattedLocationData = {
+    id: id,
+    name: name,
+    description: description,
+  }
+  console.log(formattedLocationData)
+
+  const result: unknown = await db('locations')
+    .returning(['id', 'name', 'description'])
+    .update({ ...formattedLocationData })
+    .where('id', id)
+  return result as Location[]
+}
+
+// return db('renters')
+// .returning([
+//   'id',
+//   'name',
+//   'phone_num as phoneNum',
+//   'fav_movie_id as favMovieId',
+// ])
+// .update({ ...formattedRenterData })
+// .where('id', renter.id)

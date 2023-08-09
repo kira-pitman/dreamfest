@@ -39,9 +39,9 @@ router.get('/', async (req, res, next) => {
 router.get('/:id/edit', async (req, res) => {
   const id = Number(req.params.id)
   const location = await db.getLocationById(id)
-
   const viewData = { ...location }
-
+  res.render('editLocation', viewData)
+})
   // TODO: Get the location based on its id and replace this viewData
   // const viewData = {
   //   id: id,
@@ -50,17 +50,23 @@ router.get('/:id/edit', async (req, res) => {
   //     'Not the biggest stage, but perhaps the most hip. Not the biggest stage, but perhaps the most hip. Not the biggest stage, but perhaps the most hip.',
   // }
 
-  res.render('editLocation', viewData)
-})
+ 
 
 // POST /locations/edit
-router.post('/edit', (req, res) => {
+router.post('/edit', async (req, res, next) => {
   // ASSISTANCE: So you know what's being posted ;)
-  // const { id, name, description } = req.body
+   const { id, name, description } = req.body
 
   // TODO: Update the location in the database based on its id
 
-  res.redirect('/locations')
+  try {
+    await db.updateLocation(id, name, description)
+    res.redirect('/locations')
+  }
+catch (err) {
+  next(err)
+}
+  
 })
 
 export default router
