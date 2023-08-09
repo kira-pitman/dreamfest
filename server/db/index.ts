@@ -19,3 +19,22 @@ export async function getAllLocations(): Promise<Location[]> {
 }
 
 // TODO: write some more database functions
+export async function getEventsByDay(day: string): Promise<Location[]> {
+  try {
+    const result = await db('events')
+      .join('locations', 'events.location_id', 'locations.id')
+      .select(
+        'events.id',
+        'events.day',
+        'events.name as eventName',
+        'events.time',
+        'locations.name as locationName',
+        'events.description'
+      )
+      .where('events.day', day)
+      console.log('pumpkin', result)
+      return result
+  } catch (err: any) {
+    return err.message
+  }
+}
