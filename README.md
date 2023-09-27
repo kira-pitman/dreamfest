@@ -1,6 +1,8 @@
-Challenge from week 3 of Dev Academy Aotearoa bootcamp
-
 # DreamFest
+
+Challenge from week 3 of Dev Academy Aotearoa bootcamp. This was one of the first challenges I did using typescript in combination with javascript, css, and express handlebars.
+
+# Instructions given for the challenge
 
 Dreamfest is a music festival, and the planning team has already built the UI and the routes, as well as having designed and seeded the initial database tables. We'll implement the database functions to be used from the routes, allowing the planning team to manage locations and events.
 
